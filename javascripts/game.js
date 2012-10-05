@@ -11,7 +11,6 @@ function Game(lvl, speed) {
   this.level = new Level(lvl, speed);
   this.score = 0;
   this.setScore();
-  this.setInfo();
   this.setListeners();
   this.populateViruses(this.level.number);
 }
@@ -69,9 +68,6 @@ Game.prototype.setListeners = function() {
       case 191:
         _this.toggleInstructions();
         break;
-      case 72:
-        _this.toggleHelp();
-        break;
       }
     }
   });
@@ -106,12 +102,7 @@ Game.prototype.togglePause = function() {
 
 Game.prototype.toggleInstructions = function(){
   this.paused = !this.paused;
-  Utils.shading(this.paused, $('#instructions').html());
-}
-
-Game.prototype.toggleHelp = function(){
-  this.paused = !this.paused;
-  Utils.shading(this.paused, $('.controls').html());
+  Utils.shading(this.paused, document.getElementById('instructions').innerHTML);
 }
 
 Game.prototype.tick = function() {
@@ -141,11 +132,9 @@ Game.prototype.tick = function() {
 Game.prototype.nextLevel = function() {
   this.gameOver();
   this.board.clearAll();
-  the_game.level.number++;
-  this.setLevel();
-  the_game.populateViruses(the_game.level.number);
+  the_game.populateViruses(++level);
   alert("Level " + (parseInt(level, 10) + 1));
-  the_game.start(this.level.velocity());
+  the_game.start(300);
 }
 
 Game.prototype.findMatches = function(cb) {
@@ -226,11 +215,7 @@ Game.prototype.checkHit = function() {
 }
 
 Game.prototype.setVirusCount = function() {
-  $("#viruses").html(this.virusCount);
-}
-
-Game.prototype.setLevel = function() {
-  $("#level_count").html(this.level.number);
+  document.getElementById("viruses").innerHTML = this.virusCount;
 }
 
 Game.prototype.saveScore = function() {
@@ -249,15 +234,9 @@ Game.prototype.setScore = function() {
       $("#highScore .score").html(object.attributes.score);
     },
     error: function(error) {
-      $("#highScore .score").html('0000000');
+      $("#highScore .score").html('0');
     }
   });
-}
-
-Game.prototype.setInfo = function() {
-  $("#speed_count").html(this.level.speed);
-  this.setLevel();
-  this.setVirusCount();
 }
 
 // ----------------------------------------------------------------------------
