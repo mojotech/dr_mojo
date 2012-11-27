@@ -185,6 +185,13 @@ Game.prototype.nextLevel = function() {
   $("#nextLevelModal").reveal();
   this.paused = true;
   the_game.start(this.level.velocity());
+
+  window.addEventListener('keydown', function (e) {
+    if ($("#nextLevelModal").is(':visible') && e.keyCode == 13) {
+      $('#nextLevelModal').trigger('reveal:close');
+      the_game.paused = false;
+    }
+  })
 }
 
 Game.prototype.findMatches = function(cb) {
