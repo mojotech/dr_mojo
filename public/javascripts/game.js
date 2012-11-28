@@ -50,12 +50,6 @@ Game.prototype.newVirus = function(level, num) {
 Game.prototype.gameOver = function() {
   this.done = true;
   this.clock = window.clearInterval(this.clock);
-  var restart = this.restart;
-  window.addEventListener('keydown', function (e) {
-    if (e.keyCode == 13) {
-      restart();
-    }
-  })
 }
 
 Game.prototype.setListeners = function() {
@@ -164,6 +158,7 @@ Game.prototype.tick = function() {
         }else{
           this.noInteractions = true;
           $('#gameOverModal').reveal();
+          this.onEnter(this.restart);
         }
         this.gameOver();
       } else if (this.virusCount == 0) {
@@ -331,6 +326,21 @@ Game.prototype.restart = function() {
     "&speed=" + this.initial.speed +
     "&music=" + this.initial.music;
   window.location.href = url;
+}
+
+Game.prototype.onEnter = function(action) {
+  if (this.onEnterAction) {
+    $(window).off('keydown', this.onEnterAction);
+  }
+
+  this.onEnterAction = _.bind(function(e) {
+    if (e.keyCode == 13) {
+      action();
+      $(window).off('keydown', this.onEnterAction);
+    };
+  }, this);
+
+  $(window).on('keydown', this.onEnterAction);
 }
 
 // ----------------------------------------------------------------------------
