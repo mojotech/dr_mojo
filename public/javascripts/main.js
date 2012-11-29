@@ -33,8 +33,10 @@ if (canvas) {
   window.onload = function() {
     Sound.init();
     Sound.musicSet(song);
+
+    var player = new HumanPlayer();
     the_game = new Game(level, speed, song);
-    the_game.start();
+    the_game.start(player);
 
     $('.next-level-button').bind('click', function () {
       $('#nextLevelModal').trigger('reveal:close');
