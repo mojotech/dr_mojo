@@ -14,11 +14,11 @@ time, mark, audio, video {
   margin: 0;
   padding: 0;
   border: 0;
-  font: inherit;
   font-size: 100%;
+  font: inherit;
   vertical-align: baseline; }
 
-html {
+body {
   line-height: 1; }
 
 ol, ul {
@@ -336,6 +336,7 @@ textarea:focus {
 
 .pane {
   width: 400px;
+  heigh: 250px;
   background: black;
   padding: 5%;
   color: #FFF;
@@ -349,7 +350,8 @@ textarea:focus {
   background-position: center;
   z-index: 1; }
   .pane #leader_board {
-    color: white; }
+    color: white;
+    margin-top: -20px; }
     .pane #leader_board table {
       width: 100%;
       table-layout: fixed; }
@@ -369,7 +371,9 @@ textarea:focus {
   .pane #leader_board {
     color: white; }
   .pane .option {
-    margin-left: 22px; }
+    margin-left: 22px;
+    margin-bottom: 20px;
+    border: 1px solid black; }
     .pane .option .title {
       border: 3px solid transparent;
       width: 200px;
@@ -387,7 +391,8 @@ textarea:focus {
       .pane .option .sliders .options p {
         display: inline-block;
         float: left;
-        width: 50px; }
+        width: 50px;
+        margin-top: 5px; }
       .pane .option .sliders .options p.center {
         padding-left: 29%; }
       .pane .option .sliders .options p.right {
@@ -407,8 +412,10 @@ textarea:focus {
       margin-left: 25px; }
 
 #play {
-  margin-top: 40px;
-  text-align: center; }
+  text-align: center;
+  position: absolute;
+  bottom: 10px;
+  width: 400px; }
 
 .level-number {
   float: right;
@@ -421,7 +428,7 @@ textarea:focus {
   line-height: 1.3em; }
 
 #level_canvas_wrap {
-  height: 20px; }
+  height: 10px; }
 
 #level_canvas {
   display: block;
@@ -435,7 +442,7 @@ textarea:focus {
 
 .ui-slider-handle.ui-state-default.ui-corner-all {
   background: black;
-  margin: -16px 0px;
+  margin: -18px 0px;
   width: 0;
   height: 0;
   border-left: 20px solid transparent;

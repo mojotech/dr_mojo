@@ -321,6 +321,7 @@ textarea:focus {
 
 .pane{
   width: 400px;
+  heigh: 250px;
   background: black;
   padding: 5%;
   color: #FFF;
@@ -336,6 +337,7 @@ textarea:focus {
 
   #leader_board{
     color: white;
+    margin-top: -20px;
     table{
       width: 100%;
       table-layout: fixed;
@@ -366,6 +368,8 @@ textarea:focus {
 
   .option{
     margin-left: 22px;
+    margin-bottom: 20px;
+    border: 1px solid black;
     .title{
       border: 3px solid transparent;
       width: 200px;
@@ -387,6 +391,7 @@ textarea:focus {
           display: inline-block;
           float: left;
           width: 50px;
+          margin-top: 5px;
         }
         p.center{  padding-left: 29%; }
         p.right{  padding-left: 29%; }
@@ -412,8 +417,10 @@ textarea:focus {
 }
 
 #play{
-  margin-top: 40px;
   text-align: center;
+  position:absolute;
+  bottom: 10px;
+  width: 400px;
 }
 
 .level-number{
@@ -428,7 +435,7 @@ textarea:focus {
 }
 
 #level_canvas_wrap{
-  height: 20px;
+  height: 10px;
 }
 
 #level_canvas{
@@ -448,7 +455,7 @@ textarea:focus {
 
 .ui-slider-handle.ui-state-default.ui-corner-all{
   background: black;
-  margin: -16px 0px;
+  margin: -18px 0px;
   width: 0;
   height: 0;
   border-left: 20px solid transparent;
