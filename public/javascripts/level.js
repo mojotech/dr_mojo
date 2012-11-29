@@ -1,4 +1,4 @@
-const SPEED_VEL = {'low': 300, 'med': 200, 'hi': 150};
+const SPEED_VEL = {'low': 600, 'med': 400, 'hi': 300};
 const POINTS    = {'low': 100, 'med': 200, 'hi': 300};
 
 function Level(n, s) {
