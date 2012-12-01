@@ -74,8 +74,8 @@ Game.prototype.setListeners = function() {
   });
 
   $(".submit-button").on("click", function(e) {
-    _this.playerName = $("#player-name").val();
-    _this.submitHighScore();
+    self.playerName = $("#player-name").val();
+    self.submitHighScore();
   });
 }
 
@@ -264,11 +264,13 @@ Game.prototype.setScore = function() {
   $("#score .score").html(this.score);
 
   $.get('/highscore', {}, function(response) {
-    game.leaders = _.sortBy(response.data, function(leader) {
-      return parseInt(leader.score);
-    }).reverse();
-    game.highScore = game.leaders[0].score || 0;
-    $("#highScore .score").html(game.highScore);
+    if (response.data) {
+      game.leaders = _.sortBy(response.data, function(leader) {
+        return parseInt(leader.score);
+      }).reverse();
+      game.highScore = game.leaders[0].score || 0;
+      $("#highScore .score").html(game.highScore);
+    }
   });
 }
 
