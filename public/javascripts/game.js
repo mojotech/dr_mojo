@@ -32,6 +32,7 @@ Game.prototype.newPill = function() {
   this.next_pill = new Pill(this.board, this.detector);
   this.active_pill.draw();
   this.next_pill.draw(oracle_ctx);
+  this.player.tick(true);
   return this.active_pill;
 }
 
@@ -124,6 +125,7 @@ Game.prototype.toggleMusic = function() {
 
 Game.prototype.tick = function() {
   this.pillAction('down');
+  this.player.tick();
   if (this.checkHit() || this.active_pill.isEmpty()) {
     this.findMatches(function() {
       if (!this.clock) {
@@ -161,7 +163,7 @@ Game.prototype.nextLevel = function() {
   $(".nextLevelNumber").html(the_game.level.number);
   $("#nextLevelModal").reveal();
   this.paused = true;
-  the_game.start(this.level.velocity());
+  the_game.start(this.player);
 }
 
 Game.prototype.findMatches = function(cb) {
@@ -355,4 +357,13 @@ Game.prototype.scoring = function(virus_count) {
   }
 
   this.score += sum;
+}
+
+
+Game.prototype.getPill = function() {
+  return this.active_pill;
+}
+
+Game.prototype.getBoard = function() {
+  return this.board.board;
 }

@@ -39,12 +39,19 @@ if (canvas) {
     the_game = new Game(level, speed, song);
 
     if (params.bot) {
-      player = new ComputerPlayer(the_game);
+      $('#botCodeModal').reveal();
+      $('#botCodeModal .button-link').on('click', function(e) {
+        e.preventDefault();
+        var code = $('#botCodeModal textarea').val();
+        $('#botCodeModal').trigger('reveal:close');
+        player = new ComputerPlayer(the_game, code);
+        the_game.start(player);
+
+      });
     } else {
       player = new HumanPlayer();
+      the_game.start(player);
     }
-
-    the_game.start(player);
 
     $('.next-level-button').bind('click', function () {
       $('#nextLevelModal').trigger('reveal:close');
