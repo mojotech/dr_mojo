@@ -15,6 +15,8 @@
     "connect": "latest",
     "express": "2.5.8",
     "jade": "latest",
-    "node-parse-api": "latest"
+    "node-parse-api": "latest",
+    "mocha": "latest",
+    "should": "latest"
   }
 }
