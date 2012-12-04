@@ -120,5 +120,6 @@ Board.prototype.matches = function(){
 };
 
 if(typeof module != 'undefined') {
-  module.exports = Board;
+  module.exports.Board = Board;
 }
+exports.Board = Board;

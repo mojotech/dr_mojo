@@ -1,6 +1,8 @@
 var assert            = require("assert");
-var Board             = require(__dirname + "/../public/javascripts/board.js");
-var Pill              = require(__dirname + "/../public/javascripts/pill.js");
+var Board             = require(__dirname + "/../public/javascripts/board.js").Board;
+var CollisionDetector = require(__dirname + "/../public/javascripts/collisionDetector.js").CollisionDetector;
+var PieceDrawer       = require(__dirname + "/../public/javascripts/PieceDrawer.js").CollisionDetector;
+var Pill              = require(__dirname + "/../public/javascripts/pill.js").Pill;
 var _                 = require(__dirname + "/../public/javascripts/lib/underscore.js");
 
 var width  = 10;
@@ -54,4 +56,22 @@ describe('Board', function(){
       assert.equal(b.inBounds(width,height), false);
     })
   })
+
+  // New Image() not defined
+   it('should be empty', function(){    
+     var position = [ {x : 0 , y : 0 }, {x : 2, y : 1 } ];
+     var colors = ["red", "red"];
+     var c = new CollisionDetector(b);
+     new Pill(b, c, position, colors);
+
+     b.clearAll();
+     var empty = true;
+     b.eachSpot(function(spot){
+       if(!_.isUndefined(spot)){
+         empty = false;
+       }
+     });
+
+     assert.equal(true, empty);
+   })
 })

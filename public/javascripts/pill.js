@@ -161,5 +161,5 @@ Pill.prototype.updatePosition = function() {
 }
 
 if(typeof module != 'undefined') {
-  module.exports = Pill;
+  module.exports.Pill = Pill;
 }

@@ -370,3 +370,7 @@ Game.prototype.scoring = function(virus_count) {
 
   this.score += sum;
 }
+
+if(typeof module != 'undefined') {
+  module.exports.Game = Game;
+}

@@ -21,3 +21,7 @@ CollisionDetector.prototype.canMove = function(position, pill) {
 CollisionDetector.prototype.checkSpot = function(x, y) {
   return !this.board.occupied(x, y);
 }
+
+if(typeof module != 'undefined') {
+    module.exports.CollisionDetector = CollisionDetector;
+}

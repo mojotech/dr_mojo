@@ -64,3 +64,8 @@ var PieceDrawer = (function() {
     }
   }
 })();
+
+
+if(typeof module != 'undefined') {
+  module.exports.PieceDrawer = PieceDrawer;
+}
