@@ -118,3 +118,7 @@ Board.prototype.matches = function(){
 
   return result;
 };
+
+if(typeof module != 'undefined') {
+  module.exports = Board;
+}

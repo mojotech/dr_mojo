@@ -159,3 +159,7 @@ Pill.prototype.updatePosition = function() {
     }
   }
 }
+
+if(typeof module != 'undefined') {
+  module.exports = Pill;
+}
