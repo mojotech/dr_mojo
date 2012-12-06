@@ -252,4 +252,64 @@ html
           g.findMatches(function(){});
           equal(g.board.matches().length,0,"Should Find 0 Matches after clear");
         });
+
+        test("Clearing 4 virues in lower speed", function(){
+          var level = 0;
+          var speed = 'Low';
+          var song  = 'fever';
+          var game = new Game(level, speed, song);
+
+          for(var i=0; i<4; ++i){
+            var virus    = new Virus(game, level, i);
+            virus.color  = "red";
+            virus.colors = ["red"];
+            virus.position = {x : 0, y : i};
+            game.board.board[0][i] = {pill : virus, pos : 0};
+            virus.draw();
+          }
+          game.findMatches(function(){});
+
+          equal(game.score, 1500, "Should sum 1500 points");
+        });
+
+        test("Clearing 3 virus in middle speed", function(){
+          var level = 0;
+          var speed = 'med';
+          var song  = 'fever';
+          var game = new Game(level, speed, song);
+
+          for(var i=0; i<3; ++i){
+            var virus    = new Virus(game, level, i);
+            virus.color  = "red";
+            virus.colors = ["red"];
+            virus.position = {x : 0, y : i};
+            game.board.board[0][i] = {pill : virus, pos : 0};
+            virus.draw();
+          }
+          new Pill(game.board, game.detector, [ {x : 0 , y : 3 }, {x : 1, y : 3 } ],["red", "red"]);
+          game.findMatches(function(){});
+
+          equal(game.score, 1400, "Should sum 1400 points");
+        });
+
+
+        test("Clearing 2 virus in higher speed", function(){
+          var level = 0;
+          var speed = 'hi';
+          var song  = 'fever';
+          var game = new Game(level, speed, song);
+
+          for(var i=0; i<2; ++i){
+            var virus    = new Virus(game, level, i);
+            virus.color  = "red";
+            virus.colors = ["red"];
+            virus.position = {x : 0, y : i};
+            game.board.board[0][i] = {pill : virus, pos : 0};
+            virus.draw();
+          }
+          new Pill(game.board, game.detector, [ {x : 0 , y : 2 }, {x : 0, y : 3 } ],["red", "red"]);
+          game.findMatches(function(){});
+
+          equal(game.score, 900, "Should sum 1400 points");
+        });
     })
