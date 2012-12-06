@@ -47,6 +47,10 @@ app.post('/highscore', function(req, res) {
   })
 });
 
+app.get('/test', function(req, res){
+  res.render('test')
+});
+
 app.listen(port);
 
 console.log('Listening on ' + port + ' in ' + app.settings.env + ' mode ...');
