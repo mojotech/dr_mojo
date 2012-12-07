@@ -31,11 +31,19 @@ if (canvas) {
   var oracle_ctx = oracle.getContext('2d');
 
   window.onload = function() {
+    var player;
+
     Sound.init();
     Sound.musicSet(song);
 
-    var player = new HumanPlayer();
     the_game = new Game(level, speed, song);
+
+    if (params.bot) {
+      player = new ComputerPlayer(the_game);
+    } else {
+      player = new HumanPlayer();
+    }
+
     the_game.start(player);
 
     $('.next-level-button').bind('click', function () {
