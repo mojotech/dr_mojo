@@ -1,3 +1,31 @@
+// ok, here you have 2 objects
+// this.board - game board, NxM matrix, each element can be:
+// empty - null
+// virus - {
+//   type: 'virus',
+//   color: 'red' / 'green' / 'blue'
+// }
+// half pill - {
+//   type: 'pill',
+//   color: 'red' / 'green' / 'blue'
+// }
+// full pill - {
+//   type 'pill',
+//   color: 'red' / 'green' / 'blue'
+//   part: {
+//     x: integer,  # x/y coordinates for other part of pill
+//     y: integer,
+//     color: 'red' / 'green' / 'blue'
+//   }
+// }
+//
+//
+//  this.pill - new pill
+//  [
+//     { x: integer, y: integer, color: string },
+//     { x: integer, y: integer, color: string }
+//  ]
+
 var findVscore = function(column, color1, color2) {
   var scores = {}
   if (color1 == color2) {
