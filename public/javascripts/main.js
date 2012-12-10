@@ -44,8 +44,9 @@ if (canvas) {
         e.preventDefault();
         var code = $('#botCodeModal textarea').val();
         $('#botCodeModal').trigger('reveal:close');
-        player = new ComputerPlayer(the_game, code);
-        the_game.start(player);
+        player = new ComputerPlayer(the_game);
+        player.on('ready', function() { the_game.start(player) });
+        player.loadCode(code);
 
       });
     } else {

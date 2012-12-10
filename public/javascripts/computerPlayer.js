@@ -1,17 +1,14 @@
 var _ACTIONS = ['left', 'right', 'rotate-left', 'rotate-right'];
 
-var ComputerPlayer = function(game, code) {
+var ComputerPlayer = function(game) {
   this.game = game;
-  var self = this;
+  this.evalCode = _.bind(this.evalCode, this);
 
   $(window).on('keydown', function(e) {
     if (e.keyCode == 32) {
       self.trigger('pause');
     }
   });
-
-  code = "this.code = function() {" + code + "};";
-  eval(code);
 };
 
 _.extend(ComputerPlayer.prototype, Backbone.Events, {
@@ -81,5 +78,36 @@ _.extend(ComputerPlayer.prototype, Backbone.Events, {
     }
 
     fire(actions.reverse());
+  },
+
+  loadCode: function(code) {
+    var self = this;
+    var isGist = code.match(/^https:\/\/gist.github.com\/(\w+)/);
+    if (isGist) {
+      var url = 'https://gist.github.com/' + isGist[1] + '.json';
+      $.ajax({
+        url: url,
+        dataType: 'jsonp',
+        success: function(r) {
+          var raw = r.div;
+          var re = /<div class='line' id='\w+'>.*?<\/div>/g;
+          var result = raw.match(re);
+          var code = ''
+          _.each(result, function(line) {
+            code += $(line).text() + "\n";
+          });
+          self.evalCode(code);
+          self.trigger('ready');
+        }
+      });
+    } else {
+      self.evalCode(code);
+      self.trigger('ready');
+    }
+  },
+
+  evalCode: function(code) {
+    code = "this.code = function() {" + code + "};";
+    eval(code);
   }
 });
