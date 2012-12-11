@@ -21,7 +21,6 @@ function Game(lvl, speed, music) {
   this.playerName = "";
   this.setScore();
   this.setInfo();
-  this.setListeners();
   this.populateViruses(this.level.number);
 
   this.restart = _.bind(this.restart, this);
@@ -33,6 +32,7 @@ Game.prototype.newPill = function() {
   this.next_pill = new Pill(this.board, this.detector);
   this.active_pill.draw();
   this.next_pill.draw(oracle_ctx);
+  this.player.tick(true);
   return this.active_pill;
 }
 
@@ -53,47 +53,30 @@ Game.prototype.gameOver = function() {
 }
 
 Game.prototype.setListeners = function() {
-  var _this = this;
-  window.addEventListener('keydown', function(e) {
-    if (!_this.noInteractions) {
-      switch (e.keyCode) {
-      case 65:
-        //a
-        _this.pillAction('rotate-left');
-        break;
-      case 83:
-        //s
-        _this.pillAction('rotate-right');
-        break;
-      case 77:
-        _this.toggleMusic();
-        break;
-      case 32:
-        $("#gameOverModal").trigger('reveal:close');
-        $("#nextLevelModal").trigger('reveal:close');
-        _this.togglePause();
-        break;
-      case 37:
-        _this.pillAction('left');
-        break;
-      case 40:
-        _this.pillAction('down');
-        break;
-      case 39:
-        _this.pillAction('right');
-        break;
-      case 191:
-        _this.toggleInstructions();
-        break;
-      case 72:
-        _this.toggleHelp();
-        break;
+  var self = this;
+  _.each(['rotate-left', 'rotate-right', 'left', 'right', 'down'], function(e) {
+    self.player.on(e, function() {
+      if (!self.noInteractions) {
+        self.pillAction(e);
       }
-    }
+    })
   });
+
+  _.each(['music', 'help', 'instruction'], function(action) {
+    var e = 'toggle-' + action;
+    var method = 'toggle' + action.charAt(0).toUpperCase() + action.slice(1);
+    self.player.on(e, _.bind(self[method], self));
+  });
+
+  self.player.on('pause', function() {
+    $("#gameOverModal").trigger('reveal:close');
+    $("#nextLevelModal").trigger('reveal:close');
+    self.togglePause();
+  });
+
   $(".submit-button").on("click", function(e) {
-    _this.playerName = $("#player-name").val();
-    _this.submitHighScore();
+    self.playerName = $("#player-name").val();
+    self.submitHighScore();
   });
 }
 
@@ -126,7 +109,7 @@ Game.prototype.togglePause = function() {
   Utils.shading(this.paused, 'Pause');
 }
 
-Game.prototype.toggleInstructions = function() {
+Game.prototype.toggleInstruction = function() {
   this.paused = !this.paused;
   Utils.shading(this.paused, $('#instructions').html());
 }
@@ -142,6 +125,7 @@ Game.prototype.toggleMusic = function() {
 
 Game.prototype.tick = function() {
   this.pillAction('down');
+  this.player.tick();
   if (this.checkHit() || this.active_pill.isEmpty()) {
     this.findMatches(function() {
       if (!this.clock) {
@@ -179,7 +163,7 @@ Game.prototype.nextLevel = function() {
   $(".nextLevelNumber").html(the_game.level.number);
   $("#nextLevelModal").reveal();
   this.paused = true;
-  the_game.start(this.level.velocity());
+  the_game.start(this.player);
 }
 
 Game.prototype.findMatches = function(cb) {
@@ -240,7 +224,9 @@ Game.prototype.dropDangling = function(cb) {
   }
 }
 
-Game.prototype.start = function() {
+Game.prototype.start = function(player) {
+  this.player = player;
+  this.setListeners();
   var _this = this;
   this.done = false;
   this.newPill();
@@ -280,11 +266,13 @@ Game.prototype.setScore = function() {
   $("#score .score").html(this.score);
 
   $.get('/highscore', {}, function(response) {
-    game.leaders = _.sortBy(response.data, function(leader) {
-      return parseInt(leader.score);
-    }).reverse();
-    game.highScore = game.leaders[0].score || 0;
-    $("#highScore .score").html(game.highScore);
+    if (response.data) {
+      game.leaders = _.sortBy(response.data, function(leader) {
+        return parseInt(leader.score);
+      }).reverse();
+      game.highScore = game.leaders[0].score || 0;
+      $("#highScore .score").html(game.highScore);
+    }
   });
 }
 
@@ -369,4 +357,13 @@ Game.prototype.scoring = function(virus_count) {
   }
 
   this.score += sum;
+}
+
+
+Game.prototype.getPill = function() {
+  return this.active_pill;
+}
+
+Game.prototype.getBoard = function() {
+  return this.board.board;
 }
