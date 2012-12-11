@@ -9,7 +9,7 @@ module.exports = function(parse_app) {
 
     getHighScore: function(callback) {
       parse_app.findMany('GameScore', '?order=-score&limit=10', function (err, response) {
-        var result = response ? response.result : null;
+        var result = response ? response.results : null;
         callback(err, result);
       });
     }
