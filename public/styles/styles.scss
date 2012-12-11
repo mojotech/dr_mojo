@@ -542,3 +542,11 @@ textarea:focus {
   background: url("/images/mojo.png");
   @include opacity(0.8);
 }
+
+#botCodeModal {
+  textarea {
+    width: 100%;
+    height: 500px;
+    margin-bottom: 20px;
+  }
+}

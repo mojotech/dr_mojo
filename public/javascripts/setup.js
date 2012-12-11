@@ -22,6 +22,13 @@ function start(){
   window.location.href = "play?" + jQuery.param(settings);
 };
 
+function startWithBot() {
+  var settings = new Setup();
+  settings.bot = true;
+
+  window.location.href = "play?" + jQuery.param(settings);
+}
+
 function populateLeaderBoard(){
 
   var board    = $("tbody","#leader_board"),
@@ -221,6 +228,9 @@ $(window).on('keydown', function(e) {
   switch (code) {
   case 13:
     start();
+    break;
+  case 66: // 'b'
+    startWithBot();
     break;
   case 37:
     goLeft();

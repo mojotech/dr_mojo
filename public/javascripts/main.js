@@ -31,10 +31,28 @@ if (canvas) {
   var oracle_ctx = oracle.getContext('2d');
 
   window.onload = function() {
+    var player;
+
     Sound.init();
     Sound.musicSet(song);
+
     the_game = new Game(level, speed, song);
-    the_game.start();
+
+    if (params.bot) {
+      $('#botCodeModal').reveal();
+      $('#botCodeModal .button-link').on('click', function(e) {
+        e.preventDefault();
+        var code = $('#botCodeModal textarea').val();
+        $('#botCodeModal').trigger('reveal:close');
+        player = new ComputerPlayer(the_game);
+        player.on('ready', function() { the_game.start(player) });
+        player.loadCode(code);
+
+      });
+    } else {
+      player = new HumanPlayer();
+      the_game.start(player);
+    }
 
     $('.next-level-button').bind('click', function () {
       $('#nextLevelModal').trigger('reveal:close');

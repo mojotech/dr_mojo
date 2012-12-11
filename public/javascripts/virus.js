@@ -4,7 +4,6 @@ function Virus(game, level, virusNum) {
   this.virusNum   = virusNum;
   this.game		    = game;
   this.board      = game.board;
-  this.detector   = game.detector;
   this.level      = level;
   this.maxY       = undefined;
   this.color      = undefined;
