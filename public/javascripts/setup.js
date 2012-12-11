@@ -48,8 +48,14 @@ function populateLeaderBoard(){
   }));
 
   $.get("/highscore", {}, function(response) {
+
+     // cleanup records without score
+     var data = _.filter(response.data, function(leader) {
+       return parseInt(leader.score) > 0
+    });
+
     board.html(template({
-      leaders: _.sortBy(response.data, function(leader){
+      leaders: _.sortBy(data, function(leader){
         return parseInt(leader.score);
       }).reverse()
     }));

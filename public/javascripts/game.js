@@ -268,7 +268,7 @@ Game.prototype.setScore = function() {
   $.get('/highscore', {}, function(response) {
     if (response.data) {
       game.leaders = _.sortBy(response.data, function(leader) {
-        return parseInt(leader.score);
+        return parseInt(leader.score) || 0;
       }).reverse();
       game.highScore = game.leaders[0].score || 0;
       $("#highScore .score").html(game.highScore);
