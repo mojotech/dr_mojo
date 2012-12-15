@@ -4,6 +4,8 @@ var ComputerPlayer = function(game) {
   this.game = game;
   this.evalCode = _.bind(this.evalCode, this);
 
+  var self = this;
+
   $(window).on('keydown', function(e) {
     if (e.keyCode == 32) {
       self.trigger('pause');
