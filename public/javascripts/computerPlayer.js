@@ -39,7 +39,7 @@ _.extend(ComputerPlayer.prototype, Backbone.Events, {
       for (var j = 0; j < _column.length; j++) {
         // ignore active pill
         if ((i == this.pill[0].x && j == this.pill[0].y) ||
-          ( i ==  this.pill[0].x && j == this.pill[0].y)) {
+          ( i ==  this.pill[1].x && j == this.pill[1].y)) {
           continue;
         }
 
