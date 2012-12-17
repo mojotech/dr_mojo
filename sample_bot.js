@@ -1,4 +1,4 @@
-// ok, here you have 2 objects
+// ok, here you have 3 objects
 // this.board - game board, NxM matrix, each element can be:
 // empty - null
 // virus - {
@@ -25,6 +25,16 @@
 //     { x: integer, y: integer, color: string },
 //     { x: integer, y: integer, color: string }
 //  ]
+//
+// this.moves - all possible positions of pill
+// Array of position objects.
+// [
+//   [{x: integer, y: integer}, {x: integer, y: integer}],
+//   ...
+// ]
+//
+// bot should return one position object
+// {x: integer, y: integer}
 
 var findVscore = function(column, color1, color2) {
   var scores = {}
