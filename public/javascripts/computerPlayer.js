@@ -14,6 +14,116 @@ var ComputerPlayer = function(game) {
 };
 
 _.extend(ComputerPlayer.prototype, Backbone.Events, {
+  loadCode: function(code) {
+    var self = this;
+    var isGist = code.match(/^https:\/\/gist.github.com\/(\w+)/);
+    if (isGist) {
+      var url = 'https://gist.github.com/' + isGist[1] + '.json';
+      $.ajax({
+        url: url,
+        dataType: 'jsonp',
+        success: function(r) {
+          var raw = r.div;
+          var re = /<div class='line' id='\w+'>.*?<\/div>/g;
+          var result = raw.match(re);
+          var code = ''
+          _.each(result, function(line) {
+            code += $(line).text() + "\n";
+          });
+          self.evalCode(code);
+          self.trigger('ready');
+        }
+      });
+    } else {
+      self.evalCode(code);
+      self.trigger('ready');
+    }
+  },
+
+  evalCode: function(code) {
+    code = "this.code = function() {" + code + "};";
+    eval(code);
+  },
+
+  allMoves: function() {
+    var moves = [];
+    var heightArray = [];
+    for (var i = 0; i < this.board.length; i++) {
+      var column = this.board[i];      for (var j = 0; j < column.length; j++) {
+        if (column[j]) {
+          heightArray[i] = j - 1;
+          break;
+        }
+      }
+      heightArray[i] = heightArray[i] || column.length - 1
+    }
+
+    _.each(heightArray, function(h, x) {
+      if (h > 0) {
+        moves.push([{x: x, y: h}, {x: x, y: h-1}]);
+      }
+      if (heightArray[x-1] && heightArray[x-1] >= h) {
+        moves.push([{x: x, y: h}, {x: x-1, y: h}]);
+      }
+      if (heightArray[x+1] && heightArray[x+1] >= h) {
+        moves.push([{x: x, y: h}, {x: x+1, y: h}]);
+      }
+
+    })
+    return moves;
+  },
+
+  moveTo: function(position) {
+    var moves = [];
+
+    var current = this.getDirection(this.pill);
+    var target = this.getDirection(position);
+
+    var rotate = (target - current + 4) % 4;
+
+    if (rotate == 3) {
+      moves.push('down');
+      moves.push('rotate-right')
+    } else {
+      for (var i = 0; i < rotate; i++) {
+        moves.push('rotate-left');
+      }
+    }
+
+    var x = position[0].x - this.pill[0].x;
+    var move = x > 0 ? 'right' : 'left';
+
+    for (var i = 0; i < Math.abs(x); i++) {
+      moves.push(move);
+    }
+
+    return moves;
+  },
+
+  getDirection: function(pos) {
+    if (pos[0].x == (pos[1].x - 1) && pos[0].y == pos[1].y) {
+      return 0
+    } else if (pos[0].x == pos[1].x && pos[0].y == (pos[1].y - 1)) {
+      return 1
+    } else if (pos[0].x == (pos[1].x + 1) && pos[0].y == pos[1].y) {
+      return 2
+    } else if (pos[0].x == pos[1].x && pos[0].y == (pos[1].y + 1)) {
+      return 3
+    } else {
+      return null;
+    }
+  },
+
+  fire: function(actions) {
+    var self = this;
+
+    if (actions.length > 0) {
+      var next = actions.pop();
+      self.trigger(next);
+      setTimeout(function() {self.fire(actions)}, 150);
+    }
+  },
+
   tick: function (isNewPill) {
     if (!isNewPill) {
       return;
@@ -68,48 +178,11 @@ _.extend(ComputerPlayer.prototype, Backbone.Events, {
       }
     }
 
+    this.moves = this.allMoves();
 
-    var actions = this.code() || [];
-    var self = this;
-    var fire = function(actions) {
-      if (actions.length > 0) {
-        var next = actions.pop();
-        self.trigger(next);
-        setTimeout(function() {fire(actions)}, 150);
-      }
-    }
+    var move = this.code() || [];
+    var actions = this.moveTo(move);
 
-    fire(actions.reverse());
-  },
-
-  loadCode: function(code) {
-    var self = this;
-    var isGist = code.match(/^https:\/\/gist.github.com\/(\w+)/);
-    if (isGist) {
-      var url = 'https://gist.github.com/' + isGist[1] + '.json';
-      $.ajax({
-        url: url,
-        dataType: 'jsonp',
-        success: function(r) {
-          var raw = r.div;
-          var re = /<div class='line' id='\w+'>.*?<\/div>/g;
-          var result = raw.match(re);
-          var code = ''
-          _.each(result, function(line) {
-            code += $(line).text() + "\n";
-          });
-          self.evalCode(code);
-          self.trigger('ready');
-        }
-      });
-    } else {
-      self.evalCode(code);
-      self.trigger('ready');
-    }
-  },
-
-  evalCode: function(code) {
-    code = "this.code = function() {" + code + "};";
-    eval(code);
+    this.fire(actions.reverse());
   }
 });
