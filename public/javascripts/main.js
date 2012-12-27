@@ -10,6 +10,35 @@ if(q != undefined){
   }
 }
 
+var aspect = 3 / 2;
+var container = $('#container');
+var viewport = $(window);
+
+var onResize = function() {
+  var width = viewport.width();
+  var height = viewport.height();
+  var currentAspect = width / height;
+
+  if(currentAspect > aspect) {
+    container.css({
+      height: '100%',
+      width: (height * aspect) + 'px',
+      'margin-left': (width - (height * aspect)) / 2,
+      'margin-top' : 0
+    });
+  } else {
+    container.css({
+      width: '100%',
+      height: (width / aspect) + 'px',
+      'margin-top': (height - (width / aspect)) / 2,
+      'margin-left' : 0
+    });
+  }
+}
+
+onResize();
+$(window).on('resize', _.debounce(onResize, 100));
+
 var canvas = document.getElementById('game');
 var ctx = canvas && canvas.getContext('2d');
 var colors = ["green", "red", "blue"];
@@ -24,7 +53,7 @@ if (canvas) {
   canvas.setAttribute('width', board_size[0] * block_size + "px");
   canvas.setAttribute('height', board_size[1] * block_size + "px");
 
-  var holder = document.getElementById('hold');
+  var holder = document.getElementById('HUD');
   var oracle_canvas = document.createElement('canvas');
   oracle_canvas.id = 'oracle'
   holder.appendChild(oracle_canvas);
