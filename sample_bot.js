@@ -1,4 +1,4 @@
-// ok, here you have 2 objects
+// ok, here you have 3 objects
 // this.board - game board, NxM matrix, each element can be:
 // empty - null
 // virus - {
@@ -25,6 +25,16 @@
 //     { x: integer, y: integer, color: string },
 //     { x: integer, y: integer, color: string }
 //  ]
+//
+// this.moves - all possible positions of pill
+// Array of position objects.
+// [
+//   [{x: integer, y: integer}, {x: integer, y: integer}],
+//   ...
+// ]
+//
+// bot should return one position object
+// {x: integer, y: integer}
 
 var findVscore = function(column, color1, color2) {
   var scores = {}
@@ -189,32 +199,33 @@ if (colors[0] != colors[1]) {
 
 variants = _.sortBy(variants, function(v) {return v.score; });
 var variant = variants.reverse()[0];
-var actions = [];
+
 var firstPart = this.pill[0].color == variant.color;
-var x = this.pill[0].x;
 
-if (firstPart && variant.direction == 'left') {
-  actions.push('rotate-left');
-  actions.push('rotate-left');
-} else if (firstPart && variant.direction == 'top') {
-  actions.push('down');
-  actions.push('rotate-right');
-} else if (firstPart && variant.direction == 'right') {
-} else if (!firstPart && variant.direction == 'left') {
-  x = x + 1;
-} else if (!firstPart && variant.direction == 'top') {
-  actions.push('rotate-left');
-} else if (!firstPart && variant.direction == 'right') {
-  actions.push('rotate-left');
-  actions.push('rotate-left');
-  x = x - 1;
+var x1, x2, y1, y2, move;
+
+x1 = variant.x;
+y1 = 1;
+
+switch (variant.direction) {
+case 'top':
+  x2 = x1;
+  y2 = 0;
+  break;
+case 'left':
+  x2 = x1 - 1;
+  y2 = 1;
+  break;
+case 'right':
+  x2 = x1 + 1;
+  y2 = 1;
+  break;
 }
 
-if (x != variant.x) {
-  move = x > variant.x ? 'left' : 'right';
-  for (var i = 0; i < Math.abs(x - variant.x); i++) {
-    actions.push(move);
-  }
+if (firstPart) {
+  move = [{x: x1, y: y1}, {x: x2, y: y2}];
+} else {
+  move = [{x: x2, y: y2}, {x: x1, y: y1}];
 }
 
-return actions;
+return move;
