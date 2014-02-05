@@ -33,46 +33,47 @@ html
         textarea#botCode
       .button-link run
 
-    #columnOne
-      //
-        Begin Column One
-      #clipboardLeft
-        p.clipboardTop
-          img(src='/images/clipboard_top.png')
-        #highScore
-          .text  TOP
-          .score
-        #score
-          .text  SCORE
-          .score
-      .clipboardBottom
-      #dancingViruses
-        img(src='/images/magnifying_glass.png')
-        #magnifyingGlass
-          img#animatedViruses(src='/images/animated_viruses.gif')
-    #columnTwo
-      //
-        Begin Column Two
-      #hold
-        #gameTop
-        canvas#game
-    #columnThree
-      //
-        Begin Column Three
-      #HUD
-        p
-          img(src='/images/mojo_logo.png')
-      #clipboardRight
-        p.clipboardTop
-          img(src='/images/clipboard_top.png')
-        .info
-          .level LEVEL
-          #level_count
-          .speed SPEED
-          #speed_count
-          .virus VIRUS
-          #viruses
-      .clipboardBottom
+    #container
+      #columnOne
+        //
+          Begin Column One
+        #clipboardLeft
+          p.clipboardTop
+            img(src='/images/clipboard_top.png')
+          #highScore
+            .text  TOP
+            .score
+          #score
+            .text  SCORE
+            .score
+        .clipboardBottom
+        #dancingViruses
+          img(src='/images/magnifying_glass.png')
+          #magnifyingGlass
+            img#animatedViruses(src='/images/animated_viruses.gif')
+      #columnTwo
+        //
+          Begin Column Two
+        #hold
+          #gameTop
+          canvas#game
+      #columnThree
+        //
+          Begin Column Three
+        #HUD
+          p
+            img(src='/images/mojo_logo.png')
+        #clipboardRight
+          p.clipboardTop
+            img(src='/images/clipboard_top.png')
+          .info
+            .level LEVEL
+            #level_count
+            .speed SPEED
+            #speed_count
+            .virus VIRUS
+            #viruses
+        .clipboardBottom
     .controls
       dl
         dt a:

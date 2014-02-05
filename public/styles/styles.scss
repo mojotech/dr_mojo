@@ -1,12 +1,22 @@
 @import "compass";
 @import "compass/reset";
 
+html {
+  height: 100%;
+}
+
 body {
   background-image: url('../images/bg.png');
   line-height: 1;
   max-width: 100%;
   overflow: hidden;
+  height: 100%;
   }
+
+#container {
+  height: 100%;
+  position: relative;
+}
 
 ol, ul {
   list-style: none; }
@@ -269,9 +279,9 @@ border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 #oracle {
-position: fixed;
-right: 4%;
-margin: 25px -125px 0 0;
+position: absolute;
+top: 165px;
+right: -83px;
 }
 
 .grid{
